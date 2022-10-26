@@ -1,5 +1,6 @@
 package com.leeheefull.playwright;
 
+import com.microsoft.playwright.BrowserType;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.Playwright;
 import org.jetbrains.annotations.NotNull;
@@ -11,7 +12,7 @@ public class CrawlingUtils {
     /**
      * 스크린샷
      */
-    public static void screenshot(String url, String newFileName){
+    public static void screenshot(String url, String newFileName) {
         var page = set(url);
         page.screenshot(
                 new Page.ScreenshotOptions()
@@ -37,6 +38,18 @@ public class CrawlingUtils {
                 .launch()       // 브라우저 실행
                 .newPage();     // 브라우저 페이지 생성
         page.navigate(url);     // url 진입
+        return page;
+    }
+
+    /**
+     * 시크릿 모드
+     */
+    private static @NotNull Page setSecretMode(String url) {
+        var page = Playwright.create()
+                .chromium()
+                .launch(new BrowserType.LaunchOptions())
+                .newPage();
+        page.navigate(url);
         return page;
     }
 
